@@ -14,16 +14,12 @@ jobs:
         with:
           node-version: 18
 
-      - name: Instalar Dependências do Expo
+      - name: Instalar Dependências e EAS
         run: |
-          npm install -g expo-cli
+          npm install -g eas-cli
           npm install --legacy-peer-deps
 
-      - name: Compilar Aplicativo Web/Android
-        run: npx expo export --platform web
-
-      - name: Guardar Arquivos do App
-        uses: actions/upload-artifact@v4
-        with:
-          name: CanTudoTechInfo-App
-          path: dist/
+      - name: Compilar APK Android na Nuvem
+        run: eas build --platform android --profile preview --non-interactive
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
