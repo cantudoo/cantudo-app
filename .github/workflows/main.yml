@@ -1,0 +1,29 @@
+name: Gerar Aplicativo CanTudo
+on:
+  push:
+    branches: [ principal, main ]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Baixar Código
+        uses: actions/checkout@v4
+
+      - name: Instalar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Instalar Dependências do Expo
+        run: |
+          npm install -g expo-cli
+          npm install --legacy-peer-deps
+
+      - name: Compilar Aplicativo Web/Android
+        run: npx expo export --platform web
+
+      - name: Guardar Arquivos do App
+        uses: actions/upload-artifact@v4
+        with:
+          name: CanTudoTechInfo-App
+          path: dist/
